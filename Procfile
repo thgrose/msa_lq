@@ -1,0 +1,1 @@
+web: bokeh serve --port=$PORT --num-procs=0 --host=https://lq-app.herokuapp.com --address=0.0.0.0 --use-xheaders lq_app
