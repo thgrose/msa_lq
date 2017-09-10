@@ -3,25 +3,26 @@
 
 # In[1]:
 
+
 #Tim Grose - timothy.h.grose@gmail.com
 #instructions for running
 #download as a .py.  save as main.py into lq_app folder.
 #open command prompt in folder containing lq_app folder and type "bokeh serve lq_app --show"
 
 
-# In[32]:
+# In[1]:
 
 
 #import packages
 import bokeh, pandas as pd
 
 
-# In[34]:
+# In[45]:
 
 
 #import necessary portions of bokeh
 from bokeh.plotting import *
-from bokeh.models import HoverTool, ColumnDataSource, Axis, Span, NumeralTickFormatter
+from bokeh.models import HoverTool, ColumnDataSource, Axis, Span, NumeralTickFormatter, Label, LabelSet
 from bokeh.layouts import row, widgetbox, column
 from bokeh.models.widgets import Select, Div
 from bokeh.io import curdoc, show
@@ -37,7 +38,7 @@ from os.path import dirname, join
 lqdf=pd.read_csv(join(dirname(__file__),'data','Trimmed_MSA_LQs_2017-08-06.csv'))
 
 
-# In[5]:
+# In[3]:
 
 
 #read processed lq data file
@@ -45,13 +46,13 @@ lqdf=pd.read_csv(join(dirname(__file__),'data','Trimmed_MSA_LQs_2017-08-06.csv')
 #lqdf=pd.read_csv("data/Trimmed_MSA_LQs_2017-08-06.csv")
 
 
-# In[6]:
+# In[87]:
 
 
 lqdf_agg=lqdf[(lqdf['agglvl_title']=='Supersector')&(lqdf['area_title']=='New York-Newark-Jersey City, NY-NJ-PA MSA')]
 
 
-# In[7]:
+# In[88]:
 
 
 x=lqdf_agg['msa_lq']
@@ -59,7 +60,7 @@ y=lqdf_agg['annual_avg_emplvl']
 desc=lqdf_agg['industry_title']
 
 
-# In[8]:
+# In[89]:
 
 
 #set source data
@@ -71,7 +72,7 @@ source=ColumnDataSource(data=dict(
 ))
 
 
-# In[9]:
+# In[109]:
 
 
 #set up contents  of hover tool with source data
@@ -97,7 +98,7 @@ hover = HoverTool(
 )
 
 
-# In[10]:
+# In[110]:
 
 
 #set up figure with titles and hover
@@ -106,49 +107,49 @@ p1=Figure(x_axis_label='MSA Employment Location Quotient versus all MSAs',
           tools=[hover],
           logo=None,
           plot_width=600, 
-          plot_height=600
-         )
+          plot_height=600,
+          )
 
 
-# In[35]:
+# In[111]:
 
 
 p1.yaxis[0].formatter=NumeralTickFormatter(format="0,0")
 
 
-# In[36]:
+# In[112]:
 
 
-p1.xaxis[0].formatter=NumeralTickFormatter(format="0,0")
+p1.xaxis[0].formatter=NumeralTickFormatter(format="0,0.00")
 
 
-# In[13]:
+# In[113]:
 
 
 #circle plot on p1 figure
 p1.circle('x','y',size=9,fill_color='#ff9000',line_color='firebrick',alpha=.9,source=source)
 
 
-# In[14]:
+# In[114]:
 
 
 vline=Span(location=1,dimension='height',line_color='yellow',line_width=1)
 
 
-# In[15]:
+# In[115]:
 
 
 p1.renderers.extend([vline])
 
 
-# In[16]:
+# In[116]:
 
 
 #get unique agg levels
 agglvl=lqdf['agglvl_title'].unique()
 
 
-# In[17]:
+# In[117]:
 
 
 #set up select agg level widget
@@ -159,14 +160,14 @@ agglvl_select=Select(
 )
 
 
-# In[18]:
+# In[118]:
 
 
 #get unique MSAs
 geo=lqdf['area_title'].unique()
 
 
-# In[19]:
+# In[119]:
 
 
 #set up select geo widget
@@ -177,7 +178,7 @@ geo_select=Select(
 )
 
 
-# In[20]:
+# In[120]:
 
 
 def update(attrname,old,new):
@@ -189,21 +190,21 @@ def update(attrname,old,new):
         )
 
 
-# In[21]:
+# In[121]:
 
 
 for menu in [agglvl_select,geo_select]:
     menu.on_change('value', update)
 
 
-# In[22]:
+# In[122]:
 
 
 #put controls in widget box
 controls = widgetbox([agglvl_select,geo_select],width=420)
 
 
-# In[23]:
+# In[123]:
 
 
 #add explanatory text
@@ -231,7 +232,7 @@ desc=Div(text="""
     """,width=400)
 
 
-# In[24]:
+# In[124]:
 
 
 cit=Div(text="""
@@ -249,14 +250,14 @@ cit=Div(text="""
     """,width=1000)
 
 
-# In[25]:
+# In[125]:
 
 
 #make layout with controls and figure p1
 layout = column(row(column(desc,controls),p1),cit)
 
 
-# In[37]:
+# In[126]:
 
 
 #for inline viewing
