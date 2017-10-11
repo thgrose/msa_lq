@@ -1,3 +1,7 @@
+# msa_lq
+MSA Location Quotient Viewer
+
+#  Tool Development
 The tool was developed in Python using the Bokeh package on a Windows 10 machine. The tool is deployed using Heroku. 
 
 To run locally without Heroku, download the lq_app folder.  Open the command prompt in the folder containing the lq_app folder, and type type:
@@ -8,8 +12,7 @@ The Procfile, Procfile.windows, and requirements.txt file are used when deployin
 
 See https://devcenter.heroku.com/articles/getting-started-with-python#introduction for more information on how to deploy Python apps with Heroku.
 
----------------------------------
-#Tool Purpose
+#  Tool Purpose
 How is Your City's Economy Unique?
 
 Location Quotients (LQs) compare the proportion of a particular region's employment in a 
