@@ -35,6 +35,5 @@ These MSA LQs are recalculated from overall LQs provided by the Bureau of Labor
 Statistics (BLS) Quarterly Census of Employment and Wages. Government LQs are 
 incorporated into the displayed industry aggregation levels too; these do not appear 
 directly in the BLS data.
-
 U.S. Bureau of Labor Statistics, 'Quarterly Census of Employment and Wages,' 26 June 
 2017. www.bls.gov/cew/datatoc.htm.
