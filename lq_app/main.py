@@ -246,6 +246,9 @@ cit=Div(text="""
     <br>
     U.S. Bureau of Labor Statistics, 'Quarterly Census of Employment and Wages,' 
     26 June 2017. www.bls.gov/cew/datatoc.htm.
+    <br>
+    <br>
+    Developed by Tim Grose, https://github.com/thgrose.
     </i>
     """,width=1000)
 
