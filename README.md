@@ -1,5 +1,5 @@
 # msa_lq
-MSA Location Quotient Viewer
+MSA Location Quotient Viewer: https://lq-app.herokuapp.com/
 
 #  Tool Development
 The tool was developed in Python using the Bokeh package on a Windows 10 machine. The tool is deployed using Heroku. 
