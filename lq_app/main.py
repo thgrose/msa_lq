@@ -245,10 +245,10 @@ cit=Div(text="""
     <br>
     <br>
     U.S. Bureau of Labor Statistics, 'Quarterly Census of Employment and Wages,' 
-    26 June 2017.  <a href="www.bls.gov/cew/datatoc.htm">www.bls.gov/cew/datatoc.htm</a>.
+    26 June 2017.  <a href="www.bls.gov/cew/datatoc.htm" style="color:white">www.bls.gov/cew/datatoc.htm</a>.
     <br>
     <br>
-    Developed by Tim Grose,  <a href="https://github.com/thgrose">https://github.com/thgrose</a>.
+    Developed by Tim Grose,  <a href="https://github.com/thgrose" style="color:white">https://github.com/thgrose</a>.
     </i>
     """,width=1000)
 
