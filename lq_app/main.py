@@ -1,26 +1,13 @@
 
-# coding: utf-8
-
-# In[1]:
-
-
 #Tim Grose - timothy.h.grose@gmail.com
-#instructions for running
+#instructions for running locally:
 #download as a .py.  save as main.py into lq_app folder.
 #open command prompt in folder containing lq_app folder and type "bokeh serve lq_app --show"
-
-
-# In[1]:
-
+#for instructions on how to employ on heroku, see readme file
+#coding: utf-8
 
 #import packages
 import bokeh, pandas as pd
-
-
-# In[45]:
-
-
-#import necessary portions of bokeh
 from bokeh.plotting import *
 from bokeh.models import HoverTool, ColumnDataSource, Axis, Span, NumeralTickFormatter, Label, LabelSet
 from bokeh.layouts import row, widgetbox, column
@@ -29,53 +16,30 @@ from bokeh.io import curdoc, show
 from bokeh.palettes import Inferno256
 from os.path import dirname, join
 
-
-# In[4]:
-
-
-#read processed lq data file
+#read processed location quotient (lq) data file
 #for main.py
 lqdf=pd.read_csv(join(dirname(__file__),'data','Trimmed_MSA_LQs_2017-08-06.csv'))
 
-
-# In[3]:
-
-
-#read processed lq data file
+#read processed lq data file.  the data processing was done using another script.
 #for ipynb
 #lqdf=pd.read_csv("data/Trimmed_MSA_LQs_2017-08-06.csv")
 
-
-# In[87]:
-
-
+#get subset "_agg" of lq data for one aggregation level and one location. this will be displayed when the tool is first opened.
 lqdf_agg=lqdf[(lqdf['agglvl_title']=='Supersector')&(lqdf['area_title']=='New York-Newark-Jersey City, NY-NJ-PA MSA')]
 
-
-# In[88]:
-
-
+#set x, y, and desc variables in "_agg" subset with msa lq value, employment level, and industry title respectively
 x=lqdf_agg['msa_lq']
 y=lqdf_agg['annual_avg_emplvl']
 desc=lqdf_agg['industry_title']
 
-
-# In[89]:
-
-
-#set source data
-#may need to add columns used in Select
+#set source data. this is what gets charted.
 source=ColumnDataSource(data=dict(
     x=x,
     y=y,
     desc=desc,
 ))
 
-
-# In[109]:
-
-
-#set up contents  of hover tool with source data
+#set up contents  of hover tool with source data. this allows the user to hover over a data point and see stats for that point
 hover = HoverTool(
     tooltips="""    
     <div style="background:white;">
@@ -97,10 +61,6 @@ hover = HoverTool(
         """
 )
 
-
-# In[110]:
-
-
 #set up figure with titles and hover
 p1=Figure(x_axis_label='MSA Employment Location Quotient versus all MSAs',
           y_axis_label='MSA Employment',
@@ -110,47 +70,19 @@ p1=Figure(x_axis_label='MSA Employment Location Quotient versus all MSAs',
           plot_height=600,
           )
 
-
-# In[111]:
-
-
+#set x and y axis formats
 p1.yaxis[0].formatter=NumeralTickFormatter(format="0,0")
-
-
-# In[112]:
-
-
 p1.xaxis[0].formatter=NumeralTickFormatter(format="0,0.00")
 
-
-# In[113]:
-
-
-#circle plot on p1 figure
+#circle plot on p1 figure. use source, which was created from "_agg" above.
 p1.circle('x','y',size=9,fill_color='#ff9000',line_color='firebrick',alpha=.9,source=source)
 
-
-# In[114]:
-
-
+#create and then render vertical line at x=1
 vline=Span(location=1,dimension='height',line_color='yellow',line_width=1)
-
-
-# In[115]:
-
-
 p1.renderers.extend([vline])
-
-
-# In[116]:
-
 
 #get unique agg levels
 agglvl=lqdf['agglvl_title'].unique()
-
-
-# In[117]:
-
 
 #set up select agg level widget
 agglvl_select=Select(
@@ -159,16 +91,8 @@ agglvl_select=Select(
     options=agglvl.tolist()
 )
 
-
-# In[118]:
-
-
 #get unique MSAs
 geo=lqdf['area_title'].unique()
-
-
-# In[119]:
-
 
 #set up select geo widget
 geo_select=Select(
@@ -177,10 +101,7 @@ geo_select=Select(
     options=geo.tolist()
 )
 
-
-# In[120]:
-
-
+#define function where "_agg" is subset based on what user selects for geography and aggregation level
 def update(attrname,old,new):
     lqdf_agg=lqdf[(lqdf['agglvl_title']==agglvl_select.value)&(lqdf['area_title']==geo_select.value)]
     source.data=dict(
@@ -189,25 +110,14 @@ def update(attrname,old,new):
         desc=lqdf_agg['industry_title'],
         )
 
-
-# In[121]:
-
-
+#apply above function when user changes values of geography and aggregation level
 for menu in [agglvl_select,geo_select]:
     menu.on_change('value', update)
-
-
-# In[122]:
-
 
 #put controls in widget box
 controls = widgetbox([agglvl_select,geo_select],width=420)
 
-
-# In[123]:
-
-
-#add explanatory text
+#add explanatory text in html
 desc=Div(text="""
     <h1>
     How is Your City's Economy Unique?
@@ -231,10 +141,7 @@ desc=Div(text="""
     </p>
     """,width=400)
 
-
-# In[124]:
-
-
+#more explanatory text with citations in html
 cit=Div(text="""
     <br>
     <i>
@@ -245,36 +152,19 @@ cit=Div(text="""
     <br>
     <br>
     U.S. Bureau of Labor Statistics, 'Quarterly Census of Employment and Wages,' 
-    26 June 2017.  <a href="www.bls.gov/cew/datatoc.htm" style="color:white">www.bls.gov/cew/datatoc.htm</a>.
+    26 June 2017.  <a href="https://www.bls.gov/cew/datatoc.htm" style="color:white">www.bls.gov/cew/datatoc.htm</a>.
     <br>
     <br>
-    Developed by Tim Grose,  <a href="https://github.com/thgrose" style="color:white">https://github.com/thgrose</a>.
+    Developed by Tim Grose,  <a href="https://github.com/thgrose" style="color:white">github.com/thgrose</a>.
     </i>
     """,width=1000)
-
-
-# In[125]:
-
 
 #make layout with controls and figure p1
 layout = column(row(column(desc,controls),p1),cit)
 
-
-# In[126]:
-
-
 #for inline viewing
 show(layout)
 
-
-# In[ ]:
-
-
+#show layout in bokeh document and add title
 curdoc().add_root(layout)
-
-
-# In[ ]:
-
-
 curdoc().title="LQ"
-
